@@ -49,8 +49,8 @@ app.use(require('./routes/login'));
 
 
 //HOLAMUNDO
-mongoose.connect('mongodb+srv://admin:administrador15@cluster0.29r8p.mongodb.net/cafeteria', {
-    // mongoose.connect('mongodb://localhost/cafeteria', {
+// mongoose.connect('mongodb+srv://admin:administrador15@cluster0.29r8p.mongodb.net/cafeteria', {
+mongoose.connect('mongodb://localhost/cafeteria', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false,
