@@ -10,22 +10,21 @@ app.post('/login', (req, res) => {
         if (err) {
             return res.status(400).json({
                 ok: false,
-                msg: 'ocurrio un error al momento del login',
+                msg: 'Ocurrio un error al momento del logueo',
                 err
             });
         }
-
         if (!usrDB) {
             return res.status(400).json({
                 ok: false,
-                msg: 'Mail incorrecto, intentalo nuevamente',
+                msg: 'Mail incorrecto o inexistente, intentalo de nuevo'
             });
         }
 
         if (!bcrypt.compareSync(body.password, usrDB.password)) {
             return res.status(401).json({
                 ok: false,
-                msg: 'Contraseña incorrecta, intentalo nuevamente'
+                msg: 'Contraseña incorrecta, intentalo de nuevo'
             });
         }
 

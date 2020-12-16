@@ -1,9 +1,11 @@
-require('./config/config');
+require('./config/config')
 const express = require('express');
 const mongoose = require('mongoose');
+const cors = require('cors');
+const bodyParser = require('body-parser');
 const app = express();
-var bodyParser = require('body-parser');
-// Habilita CORS
+
+//CORS
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader(
@@ -17,16 +19,27 @@ app.use((req, res, next) => {
     next();
 });
 
+//hola mundo 
+//parse application/x-www-fomr-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }));
 
-// parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: false }))
+//parse application/json
+app.use(bodyParser.json());
 
-// parse application/json
-app.use(bodyParser.json())
+
+// app.use(cors());
+// app.use((req, res, next) => {
+//     res.header('Access-Control-Allow-Origin', '*');
+//     res.header('Access-Control-Allow-Headers', 'Authorization, Origin, X-Requested-With, Content-Type, Accept');
+//     res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE, PATCH');
+//     res.header('Allow', 'GET, POST, OPTIONS, PUT, DELETE, PATCH');
+//     next();
+// });
+
 
 
 app.get('/', function(req, res) {
-    res.send('<h1>Equpipo 2 -4A </h1>');
+    res.send('<h1>Bienvenido a mi servidor REST</h1>');
 });
 
 app.use(require('./routes/usuario'));
@@ -34,7 +47,58 @@ app.use(require('./routes/categoria'));
 app.use(require('./routes/producto'));
 app.use(require('./routes/login'));
 
-mongoose.connect('mongodb+srv://admin:administrador15@cluster0.29r8p.mongodb.net/cafeteria', {
+
+//HOLAMUNDO
+mongoose.connect('require('. / config / config ')
+const express = require('express');
+const mongoose = require('mongoose');
+const cors = require('cors');
+const bodyParser = require('body-parser');
+const app = express();
+
+//CORS
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader(
+        'Access-Control-Allow-Headers',
+        'Origin, X-Requested-With, Content-Type, Accept, Authorization'
+    );
+    res.setHeader(
+        'Access-Control-Allow-Methods',
+        'GET, POST, PATCH, PUT, DELETE, OPTIONS'
+    );
+    next();
+});
+
+//hola mundo 
+//parse application/x-www-fomr-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }));
+
+//parse application/json
+app.use(bodyParser.json());
+
+
+// app.use(cors());
+// app.use((req, res, next) => {
+//     res.header('Access-Control-Allow-Origin', '*');
+//     res.header('Access-Control-Allow-Headers', 'Authorization, Origin, X-Requested-With, Content-Type, Accept');
+//     res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE, PATCH');
+//     res.header('Allow', 'GET, POST, OPTIONS, PUT, DELETE, PATCH');
+//     next();
+// });
+
+
+
+app.get('/', function(req, res) {
+    res.send('<h1>Bienvenido a mi servidor REST</h1>');
+});
+
+app.use(require('./routes/usuario')); app.use(require('./routes/categoria')); app.use(require('./routes/producto')); app.use(require('./routes/login'));
+
+
+//HOLAMUNDO
+//mongoose.connect('mongodb +srv://admin:12345678__@cluster0.zrrea.mongodb.net/cafeteria', {
+mongoose.connect('mongodb://localhost/cafeteria', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false,
@@ -45,5 +109,19 @@ mongoose.connect('mongodb+srv://admin:administrador15@cluster0.29r8p.mongodb.net
 });
 
 app.listen(process.env.PORT, () => {
-    console.log('La aplicacion esta en linea por el puerto', process.env.PORT)
+    console.log('El servidor esta en linea en el puerto', process.env.PORT);
+});
+', {
+// mongoose.connect('mongodb://localhost/cafeteria', {
+useNewUrlParser: true,
+useUnifiedTopology: true,
+useFindAndModify: false,
+useCreateIndex: true
+}, (err, res) => {
+if (err) throw err;
+console.log('Base de datos ONLINE');
+});
+
+app.listen(process.env.PORT, () => {
+    console.log('El servidor esta en linea en el puerto', process.env.PORT);
 });

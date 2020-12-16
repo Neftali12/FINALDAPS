@@ -3,48 +3,53 @@ const _ = require('underscore');
 const app = express();
 const Producto = require('../models/producto');
 
-app.get('/producto', (req, res) => {
+app.get('/producto', function(req, res) {
     let desde = req.query.desde || 0;
-    let hasta = req.query.hasta || 100;
-
-    Producto.find({})
+    let hasta = req.query.hasta || 300;
+    //HOLA MUNDO
+    Producto.find({ disponible: true })
         .skip(Number(desde))
         .limit(Number(hasta))
-        .populate('categoria', 'descripcion usuario')
+        .populate('usuario', 'nombre email')
+        .populate('categoria', 'descripcion')
         .exec((err, productos) => {
             if (err) {
                 return res.status(400).json({
                     ok: false,
-                    msg: 'Ocurrio un error al listar las productos',
+                    msg: 'Ocurrio un error al momento de consultar',
                     err
                 });
             }
 
             res.json({
                 ok: true,
-                msg: 'Productos listadas con exito',
+                msg: 'Lista de productos obtenida con exito',
                 conteo: productos.length,
                 productos
             });
         });
 });
 
-app.get('/producto/:id', (req, res) => {
-    let idprod = req.params.id;
-    Producto.findById({ _id: idprod })
-        .populate('categoria', 'descripcion usuario')
+app.get('/producto/:id', function(req, res) {
+
+    let idProducto = req.params.id;
+
+    Producto.findById({ _id: idProducto })
+        .populate('usuario', 'nombre email')
+        .populate('categoria', 'descripcion')
         .exec((err, productos) => {
             if (err) {
                 return res.status(400).json({
                     ok: false,
-                    msg: 'Ocurrio un error al listar las productos',
+                    msg: 'Ocurrio un error al momento de consultar',
                     err
                 });
             }
 
             res.json({
                 ok: true,
-                msg: 'Productos listadas con exito',
+                msg: 'Lista de productos obtenida con exito',
+                conteo: productos.length,
                 productos
             });
         });
@@ -52,10 +57,11 @@ app.get('/producto/:id', (req, res) => {
 
 app.post('/producto', (req, res) => {
     let pro = new Producto({
-        _id: req.body._id,
-        nombre: req.body.nombre,
-        preciouni: req.body.preciouni,
+        articulo: req.body.articulo,
+        precioUni: req.body.precioUni,
         categoria: req.body.categoria,
+        disponible: req.body.disponible,
+        usuario: req.body.usuario
     });
 
     pro.save((err, proDB) => {
@@ -76,46 +82,46 @@ app.post('/producto', (req, res) => {
 });
 
 app.put('/producto/:id', function(req, res) {
-    let id = req.params.id
-    let body = _.pick(req.body, ['nombre', 'preciouni', 'categoria']);
+    let id = req.params.id;
+    let body = _.pick(req.body, ['articulo', 'precioUni']);
 
-    Producto.findByIdAndUpdate(id, body, { new: true, runValidators: true, context: 'query' }, (err, prodDB) => {
-        if (err) {
-            return res.status(400).json({
-                ok: false,
-                msg: 'Ocurrio un error al actualizar',
-                err
+    Producto.findByIdAndUpdate(id, body, { new: true, runValidators: true, context: 'query' },
+        (err, proDB) => {
+            if (err) {
+                return res.status(400).json({
+                    ok: false,
+                    msg: 'Ocurrio un error al momento de actualizar',
+                    err
+                });
+            }
+            res.json({
+                ok: true,
+                msg: 'Producto actualizado con exito',
+                producto: proDB
             });
-        }
-
-        res.json({
-            ok: true,
-            msg: 'Producto actualizado con exito',
-            productos: prodDB
         });
-    });
 });
 
 app.delete('/producto/:id', function(req, res) {
+
     let id = req.params.id;
 
-    Producto.deleteOne({ _id: id }, (err, productoBorrado) => {
+    Producto.findByIdAndUpdate(id, { disponible: false }, { new: true, runValidators: true, context: 'query' }, (err, proDB) => {
         if (err) {
             return res.status(400).json({
                 ok: false,
-                msg: 'Ocurrio un error al intentar de eliminar el producto',
+                msg: 'Ocurrio un error al momento de eliminar',
                 err
             });
         }
-
         res.json({
             ok: true,
-            msg: 'Producto eliminado con exito',
-            productoBorrado
+            msg: 'Porducto eliminado con exito',
+            proDB
+
         });
     });
 });
-
 
 
 module.exports = app;
